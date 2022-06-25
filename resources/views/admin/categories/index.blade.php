@@ -7,6 +7,8 @@
 
 <div class="container">
     <h1 class="my-3">All Categories</h1>
+    @include('partials.session_message')
+    @include('partials.errors')
     <div class="row">
         <div class="col pe-5">
             <form action="" method="post" class="d-flex align-items-center">

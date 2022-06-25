@@ -2,4 +2,4 @@
 <div class="alert alert-success">
     {{ session('message') }}
 </div>
-@endifs
+@endif

@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 class CategoryController extends Controller
 {
@@ -19,15 +21,6 @@ class CategoryController extends Controller
         return view('admin.categories.index', compact('cats'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -37,19 +30,26 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //validare
+        $val_data = $request->validate([
+            'name' => 'required|unique:categories'
+        ]);
+
+        //genera slug
+        $slug = Str::slug($request->name);
+        $val_data['slug'] = $slug;
+
+        // salvare - creiamo una nuova istanza della categoria
+
+        Category::create($val_data);
+
+        //reditect
+
+        return redirect()->back()->with('message', "category $slug added");
+
+
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Category  $category
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Category $category)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.
@@ -71,7 +71,18 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
-        //
+        //validare
+        $val_data = $request->validate([
+            'name' => ['required', Rule::unique('categories')->ignore($category)]
+        ]);
+
+        //genera slug
+        $slug = Str::slug($request->name);
+        $val_data['slug'] = $slug;
+
+        $category->update($val_data);
+        //redirect
+        return redirect()->back()->with('message', "category $slug updated");
     }
 
     /**
@@ -82,6 +93,7 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        $category->delete();
+        return redirect()->back()->with('message', "category $category->name eliminated");
     }
 }
