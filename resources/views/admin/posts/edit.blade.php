@@ -29,6 +29,18 @@
           <label for="content" class="form-label">Content</label>
           <textarea class="form-control" name="content" id="content" rows="4" value="{{old('content', $post->content)}}"></textarea>
         </div>
+        <div class="mb-3">
+        <label for="category_id" class="form-label">Categories</label>
+        <select class="form-control @error('category_id') is-invalid @enderror" name="category_id" id="category_id">
+            <option value="">Select a category</option>
+            @forelse($categories as $category)
+
+            <option value="{{$category->id}}" {{ $category->id == old('category_id', $post->category ? $post->category->id :'' )  ? 'selected' : ''}}>{{$category->name}}</option>
+            @empty
+            <option value="" disabled> No categories to select</option>
+            @endforelse
+        </select>
+    </div>
         <button type="submit" class="btn btn-primary text-white">Edit Post</button>
 
     </form>

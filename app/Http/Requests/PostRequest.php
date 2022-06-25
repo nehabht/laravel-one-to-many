@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use phpDocumentor\Reflection\Types\Nullable;
 
 class PostRequest extends FormRequest
 {
@@ -27,6 +28,7 @@ class PostRequest extends FormRequest
             'title' => 'required|unique:posts|max:150',
             'cover_image' => 'required',
             'content' => 'nullable',
+            'category_id' =>[ 'nullable','exists:categories,id']
         ];
     }
 }
