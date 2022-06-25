@@ -27,6 +27,11 @@ Route::middleware('auth')->prefix('admin')->namespace('Admin')->name('admin.')->
     Route::resource('posts', 'PostController')->parameters([
         'posts' => 'post:slug'
     ]);
+    //categories
+    Route::resource('categories', 'CategoryController')->parameters([
+        'categories' => 'category:slug'
+    ]);
+
 
 });
 
