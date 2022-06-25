@@ -3,10 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Post;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PostRequest;
+use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 class PostController extends Controller
 {
@@ -83,12 +84,18 @@ class PostController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function update(PostRequest $request, Post $post)
+    public function update(Request $request, Post $post)
     {
         //dd($request->all());
+        /*validate data con PostRequest*/
+        //$val_data = $request->validated();
+        /*validate data unique*/
+        $val_data = $request->validate([
+            'title' => ['required', Rule::unique('posts')->ignore($post)],
+            'cover_image' => 'nullable',
+            'content' => 'nullable'
+        ]);
 
-        //validate data
-        $val_data = $request->validated();
         //dd($val_data);
         //generate slug
         $slug = Str::slug($request->title, '-');
